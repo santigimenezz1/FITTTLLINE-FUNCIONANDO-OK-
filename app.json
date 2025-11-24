@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "FUTBLEX PRO",
+    "slug": "fittlline",
+    "version": "1.0.50",
+    "orientation": "portrait",
+    "icon": "./assets/icon-new.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.santigimenezz.proyectoNative",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "jsEngine": "hermes",
+      "buildNumber": "1.0.50",
+      "icon": "./assets/icon-new.png",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.fittlline.fittlline",
+      "permissions": [],
+      "googleServicesFile": "./google-services.json",
+      "jsEngine": "hermes",
+      "versionCode": 8
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      "@react-native-firebase/app"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "273eb797-9131-40e0-86af-a1f357d453e6"
+      }
+    }
+  }
+}

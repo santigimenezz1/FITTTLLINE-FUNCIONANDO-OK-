@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757788765388",
+    "project_id": "maderoterapia-4fd62",
+    "storage_bucket": "maderoterapia-4fd62.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757788765388:android:6a6f381a21670c24a36669",
+        "android_client_info": {
+          "package_name": "com.maderoterapiapinedo.maderoterapia.pinedo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-X38zCUmKjgRAvPqhBWWwgSn0PemLJYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

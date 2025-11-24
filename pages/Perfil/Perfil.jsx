@@ -1,0 +1,294 @@
+import { Pressable, Text, View, Alert, Image } from "react-native";
+import NavBar from "../../components/NavBar/NavBar.jsx";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "../../Context/Context.jsx";
+import { Query, addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { db } from "../../firebaseConfig.js";
+import { showMessage } from "react-native-flash-message";
+
+const Perfil = () => {
+  const { setUsuarioOn, userRegistro, eliminarUsuario, idiomaActual, setIdiomaActual } = useContext(CartContext);
+  const [userPerfil, setUserPerfil] = useState();
+  const [idioma, setIdioma] = useState("https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725984645/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/espana_wyfm4p.png");
+  const { userOnline } = useContext(CartContext);
+
+  // --- funciones/lógica que ya tenías (sin cambios) ---
+  const obtenerNombrePais = (url) => {
+    const match = url.match(/\/([^\/_]+)_\w+\.png$/);
+    const pais = match ? match[1].replace(/-/g, " ") : null;
+    setIdiomaActual(pais)
+  };
+
+  const actualizarPaisUsuario = async (idioma) => {
+    try {
+      const userCollectionRef = collection(db, "usuarios");
+      const q = query(userCollectionRef, where("email", "==", userOnline.email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userDocRef = userDoc.ref;
+        await updateDoc(userDocRef, { pais: idioma });
+        console.log("País actualizado correctamente a:", idioma);
+      } else {
+        console.error("Usuario no encontrado.");
+      }
+    } catch (error) {
+      console.error("Error al actualizar el país:", error);
+    }
+  };
+
+  const cambiarIdioma = async (idioma) => {
+    setIdioma(idioma);
+    const match = idioma.match(/\/([^\/_]+)_\w+\.png$/);
+    const pais = match ? match[1].replace(/-/g, " ") : null;
+    showMessage({
+      message: 'Idioma cambiado con éxito',
+      type: 'success',
+    });
+    actualizarPaisUsuario(pais)
+    setIdiomaActual(pais)
+  };
+
+  const urlIdiomas = {
+    españa: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725984645/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/espana_wyfm4p.png",
+    italia: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725984646/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/italia_r7gxfl.png",
+    francia: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725984645/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/francia_bluayx.png",
+    inglaterra: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725984645/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/inglaterra_vgobrt.png",
+    estadosUnidos: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1747076206/estadosUnidos_x4bgrp.png",
+    paisesBajos: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725985145/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/paises-bajos_hhqaua.png",
+    alemania: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1725984645/APP%20ALFOMBRA%20DE%20FUTBOL%20AMAZON/bandera_ykvinl.png",
+    portugal: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1746808357/portugal_ynpltt.png"
+  };
+
+  useEffect(() => {
+    const fetchUserByEmail = async (email) => {
+      const userCollectionRef = collection(db, "usuarios");
+      const q = query(userCollectionRef, where("email", "==", userRegistro.email));
+      try {
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          setUserPerfil(userDoc.data());
+        }
+      } catch (error) {
+        console.error("Error al obtener el usuario:", error);
+      }
+    };
+    fetchUserByEmail("test3@gmail.com");
+  }, []);
+
+  const handleEliminarCuenta = (idiomaActual) => {
+    const mensajes = {
+      espana: {
+        titulo: "Confirmar eliminación",
+        mensaje: "¿Estás seguro de que deseas eliminar tu cuenta?",
+        cancelar: "Cancelar",
+        aceptar: "Aceptar",
+        exito: "Cuenta eliminada con éxito"
+      },
+      italia: {
+        titulo: "Conferma eliminazione",
+        mensaje: "Sei sicuro di voler eliminare il tuo account?",
+        cancelar: "Annulla",
+        aceptar: "Conferma",
+        exito: "Account eliminato con successo"
+      },
+      francia: {
+        titulo: "Confirmer la suppression",
+        mensaje: "Êtes-vous sûr de vouloir supprimer votre compte ?",
+        cancelar: "Annuler",
+        aceptar: "Confirmer",
+        exito: "Compte supprimé avec succès"
+      },
+      bandera: {
+        titulo: "Löschen bestätigen",
+        mensaje: "Möchten Sie Ihr Konto wirklich löschen?",
+        cancelar: "Abbrechen",
+        aceptar: "Bestätigen",
+        exito: "Konto erfolgreich gelöscht"
+      },
+      paisesBajos: {
+        titulo: "Verwijdering bevestigen",
+        mensaje: "Weet je zeker dat je je account wilt verwijderen?",
+        cancelar: "Annuleren",
+        aceptar: "Bevestigen",
+        exito: "Account succesvol verwijderd"
+      },
+      inglaterra: {
+        titulo: "Confirm deletion",
+        mensaje: "Are you sure you want to delete your account?",
+        cancelar: "Cancel",
+        aceptar: "Confirm",
+        exito: "Account successfully deleted"
+      },
+      estadosUnidos: {
+        titulo: "Confirm deletion",
+        mensaje: "Are you sure you want to delete your account?",
+        cancelar: "Cancel",
+        aceptar: "Confirm",
+        exito: "Account successfully deleted"
+      },
+      portugal: {
+        titulo: "Confirmar exclusão",
+        mensaje: "Tem certeza de que deseja excluir sua conta?",
+        cancelar: "Cancelar",
+        aceptar: "Confirmar",
+        exito: "Conta excluída com sucesso"
+      }
+    };
+
+    const t = mensajes[idiomaActual] || mensajes["espana"];
+
+    Alert.alert(
+      t.titulo,
+      t.mensaje,
+      [
+        { text: t.cancelar, style: "cancel" },
+        {
+          text: t.aceptar,
+          onPress: () => {
+            eliminarUsuario();
+            showMessage({
+              message: t.exito,
+              type: 'success',
+            });
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  // --- UI nueva (solo diseño) ---
+  return (
+    <View style={{ flex: 1, backgroundColor: "orange" }}>
+      <NavBar />
+
+      {/* Contenido */}
+      <View style={{ padding: 20, gap: 16 }}>
+        {/* Tarjeta de cuenta */}
+        <View
+          style={{
+            backgroundColor: "#F9FAFB",
+            borderRadius: 20,
+            padding: 20,
+            borderWidth: 1,
+            borderColor: "#E5E7EB",
+            shadowColor: "#000",
+            shadowOpacity: 0.06,
+            shadowRadius: 10,
+            elevation: 2
+          }}
+        >
+          {/* Cabecera con avatar simple */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: 16,
+                backgroundColor: "#111827",
+                alignItems: "center",
+                justifyContent: "center",
+                marginRight: 12
+              }}
+            >
+              <Text style={{ color: "#fff", fontWeight: "800", fontSize: 18 }}>
+                {userOnline?.email?.[0]?.toUpperCase() || "U"}
+              </Text>
+            </View>
+
+            <View style={{ flex: 1 }}>
+              {/* Título traducido */}
+              {idiomaActual === "espana" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Cuenta activa</Text>}
+              {idiomaActual === "italia" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Account attivo</Text>}
+              {idiomaActual === "francia" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Compte actif</Text>}
+              {idiomaActual === "bandera" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Aktives Konto</Text>}
+              {idiomaActual === "paisesBajos" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Actief account</Text>}
+              {idiomaActual === "inglaterra" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Active account</Text>}
+              {idiomaActual === "estadosUnidos" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Active account</Text>}
+              {idiomaActual === "portugal" && <Text style={{ color: "#111827", fontSize: 18, fontWeight: "800" }}>Conta ativa</Text>}
+
+              {/* Email */}
+              {!!userOnline?.email && (
+                <Text style={{ color: "#4B5563", marginTop: 2 }}>
+                  {userOnline.email}
+                </Text>
+              )}
+            </View>
+          </View>
+
+          {/* Badge de estado */}
+          <View
+            style={{
+              marginTop: 14,
+              alignSelf: "flex-start",
+              backgroundColor: "#D1FAE5",
+              borderColor: "#10B981",
+              borderWidth: 1,
+              paddingVertical: 6,
+              paddingHorizontal: 10,
+              borderRadius: 999
+            }}
+          >
+            <Text style={{ color: "#065F46", fontWeight: "700", fontSize: 12 }}>
+              • Online
+            </Text>
+          </View>
+        </View>
+
+        {/* Botones de acción */}
+        <View style={{ gap: 12, marginTop: 4 }}>
+          {/* Cerrar sesión (outline) */}
+          <Pressable
+            onPress={() => setUsuarioOn(false)}
+            style={{
+              height: 48,
+              borderRadius: 14,
+              borderWidth: 1.5,
+              borderColor: "#111827",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#FFFFFF"
+            }}
+            android_ripple={{ color: "#E5E7EB" }}
+          >
+            {idiomaActual === "espana" && <Text style={{ color: "#111827", fontWeight: "800" }}>Cerrar sesión</Text>}
+            {idiomaActual === "italia" && <Text style={{ color: "#111827", fontWeight: "800" }}>Chiudere la sessione</Text>}
+            {idiomaActual === "francia" && <Text style={{ color: "#111827", fontWeight: "800" }}>Se déconnecter</Text>}
+            {idiomaActual === "bandera" && <Text style={{ color: "#111827", fontWeight: "800" }}>Abmelden</Text>}
+            {idiomaActual === "paisesBajos" && <Text style={{ color: "#111827", fontWeight: "800" }}>Afmelden</Text>}
+            {idiomaActual === "inglaterra" && <Text style={{ color: "#111827", fontWeight: "800" }}>Log out</Text>}
+            {idiomaActual === "estadosUnidos" && <Text style={{ color: "#111827", fontWeight: "800" }}>Log out</Text>}
+            {idiomaActual === "portugal" && <Text style={{ color: "#111827", fontWeight: "800" }}>Sair</Text>}
+          </Pressable>
+
+          {/* Eliminar cuenta (primary rojo) */}
+          <Pressable
+            onPress={() => handleEliminarCuenta(idiomaActual)}
+            style={{
+              height: 48,
+              borderRadius: 14,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#EF4444"
+            }}
+            android_ripple={{ color: "#DC2626" }}
+          >
+            {idiomaActual === "espana" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Eliminar cuenta</Text>}
+            {idiomaActual === "italia" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Eliminare account</Text>}
+            {idiomaActual === "francia" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Supprimer le compte</Text>}
+            {idiomaActual === "bandera" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Konto löschen</Text>}
+            {idiomaActual === "paisesBajos" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Account verwijderen</Text>}
+            {idiomaActual === "inglaterra" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Delete account</Text>}
+            {idiomaActual === "estadosUnidos" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Delete account</Text>}
+            {idiomaActual === "portugal" && <Text style={{ color: "#FFFFFF", fontWeight: "800" }}>Apagar conta</Text>}
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default Perfil;
