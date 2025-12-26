@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { ScrollView, ImageBackground, View, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import ModalCodigoDesbloqueo from '../../../components/ModalCodigoDesbloqueo/ModalCodigoDesbloqueo';
+import ModalCodigoDesbloqueoKit from '../../../../components/ModalCodigoDesbloqueoKit/ModalCodigoDesbloqueoKit';
 
-const DetalleNivel = () => {
+
+const DetalleNivelNivelesKit = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { rutaNivel, data, nivelNombre } = route.params;
@@ -16,7 +17,7 @@ const DetalleNivel = () => {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://res.cloudinary.com/dcf9eqqgt/image/upload/v1755198477/Maderotherapy_xpjkj4.jpg' }}
+      source={{ uri: 'https://res.cloudinary.com/dcf9eqqgt/image/upload/f_auto,q_auto,w_600/v1757168484/Dise%C3%B1o_sin_t%C3%ADtulo_18_s89bj4.png' }}
       style={styles.imageBackground}
       imageStyle={{ opacity: 1 }}
     >
@@ -31,7 +32,7 @@ const DetalleNivel = () => {
             return numA - numB;
           })
           .map(([key, ejercicioData], index) => (
-            <ModalCodigoDesbloqueo
+            <ModalCodigoDesbloqueoKit
               key={key}
               nivel={rutaNivel}
               tiempo={ejercicioData.duracion}
@@ -59,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetalleNivel;
+export default DetalleNivelNivelesKit;

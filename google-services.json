@@ -1,40 +1,21 @@
 {
   "project_info": {
-    "project_number": "757788765388",
-    "project_id": "maderoterapia-4fd62",
-    "storage_bucket": "maderoterapia-4fd62.firebasestorage.app"
+    "project_number": "793407211700",
+    "project_id": "fittlline-alfombra-conos",
+    "storage_bucket": "fittlline-alfombra-conos.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:757788765388:android:6a6f381a21670c24a36669",
+        "mobilesdk_app_id": "1:793407211700:android:591bc85df36e1476a36fe1",
         "android_client_info": {
-          "package_name": "com.maderoterapiapinedo.maderoterapia.pinedo"
+          "package_name": "com.fittlline.fittlline"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC-X38zCUmKjgRAvPqhBWWwgSn0PemLJYI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:757788765388:android:8aa8e27e844012b4a36669",
-        "android_client_info": {
-          "package_name": "com.maderoterapiapinedo.maderoterapia.pinedo"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC-X38zCUmKjgRAvPqhBWWwgSn0PemLJYI"
+          "current_key": "AIzaSyB79g4n76Rd3bDE_Dq1W1PttzUlbIi7bEA"
         }
       ],
       "services": {

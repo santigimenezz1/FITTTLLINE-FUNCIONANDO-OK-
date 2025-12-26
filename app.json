@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "FUTBLEX PRO",
-    "slug": "fittlline",
-    "version": "1.0.50",
+    "name": "FITTLLINE",
+    "slug": "fittlline-nuevo",
+    "version": "1.0.52",
     "orientation": "portrait",
-    "icon": "./assets/icon-new.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -13,11 +13,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.santigimenezz.proyectoNative",
+      "bundleIdentifier": "com.fittlline",
       "googleServicesFile": "./GoogleService-Info.plist",
       "jsEngine": "hermes",
-      "buildNumber": "1.0.50",
-      "icon": "./assets/icon-new.png",
+      "buildNumber": "1.0.52",
+      "icon": "./assets/icon.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -50,7 +50,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "273eb797-9131-40e0-86af-a1f357d453e6"
+        "projectId": "4cb34623-1051-47f4-b780-ac651564fdff"
       }
     }
   }

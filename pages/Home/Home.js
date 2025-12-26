@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: 'NunitoSans_400Regular',
     display:"flex",
+    marginTop:30
   },
   home__tipsContainer: {
     marginTop: 30,

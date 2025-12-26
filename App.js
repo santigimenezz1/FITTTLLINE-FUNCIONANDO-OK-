@@ -1,105 +1,151 @@
-import 'react-native-gesture-handler';
-import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import React, { useEffect, useContext, useCallback } from 'react';
+import { Alert, Text, Image, View } from 'react-native';
+import VersionCheck from 'react-native-version-check';
 import * as Linking from 'expo-linking';
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeNavigator from './pages/Home/HomeNavigator.js';
 import Perfil from './pages/Perfil/Perfil.jsx';
-import AppLoading from 'expo-app-loading';
 import { useFonts, NunitoSans_400Regular, NunitoSans_700Bold } from '@expo-google-fonts/nunito-sans';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 import LoginUsuarioNavigator from './pages/LoginUsuarios/LoginUsuariosNavigator.js';
 import GlobalContext, { CartContext } from './Context/Context.jsx';
 import FlashMessage from 'react-native-flash-message';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Roboto_400Regular } from '@expo-google-fonts/roboto';
 import Lenguaje from './pages/Lenguaje/Lenguaje.jsx';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import * as SplashScreen from 'expo-splash-screen';
 
-const Drawer = createDrawerNavigator();
+// 👇 Mantener el splash visible hasta que carguen las fuentes
+SplashScreen.preventAutoHideAsync();
 
-function MyDrawer() {
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
   const { idiomaActual } = useContext(CartContext);
 
   return (
-    <Drawer.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: 'white' }, // barra superior dorada
-        headerTintColor: 'black',
-        drawerStyle: { backgroundColor: '#fff', width: 250 },
-        drawerLabelStyle: { fontSize: RFValue(14), fontFamily: 'Roboto_400Regular' },
-      }}
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: 'black',
+          height: RFValue(90),
+          borderTopColor: 'black',
+          borderTopWidth: 4,
+          paddingBottom: 20,
+          borderColor: 'orange',
+        },
+        tabBarLabel: ({ focused }) => {
+          let label = '';
+          if (route.name === 'Ejercicios') {
+            if (idiomaActual === 'espana') label = 'Ejercicios';
+            else if (idiomaActual === 'italia') label = 'Esercizi';
+            else if (idiomaActual === 'francia') label = 'Exercices';
+            else if (idiomaActual === 'bandera') label = 'Übungen';
+            else if (idiomaActual === 'paisesBajos') label = 'Oefeningen';
+            else if (idiomaActual === 'inglaterra' || idiomaActual === 'estadosUnidos') label = 'Exercises';
+            else if (idiomaActual === 'portugal') label = 'Exercícios';
+          } else if (route.name === 'Lenguaje') {
+            if (idiomaActual === 'espana') label = 'Lenguaje';
+            else if (idiomaActual === 'italia') label = 'Linguaggio';
+            else if (idiomaActual === 'francia') label = 'Langage';
+            else if (idiomaActual === 'bandera') label = 'Sprache';
+            else if (idiomaActual === 'paisesBajos') label = 'Taal';
+            else if (idiomaActual === 'inglaterra' || idiomaActual === 'estadosUnidos') label = 'Language';
+            else if (idiomaActual === 'portugal') label = 'Linguagem';
+          } else if (route.name === 'Perfil') {
+            if (idiomaActual === 'espana') label = 'Cuenta';
+            else if (idiomaActual === 'italia') label = 'Account';
+            else if (idiomaActual === 'francia') label = 'Compte';
+            else if (idiomaActual === 'bandera') label = 'Konto';
+            else if (idiomaActual === 'paisesBajos') label = 'Account';
+            else if (idiomaActual === 'inglaterra' || idiomaActual === 'estadosUnidos') label = 'Account';
+            else if (idiomaActual === 'portugal') label = 'Conta';
+          }
+
+          return (
+            <Text style={{
+              color: focused ? 'orange' : 'white',
+              fontSize: RFValue(13),
+              fontFamily: 'Roboto_400Regular',
+              letterSpacing: 1,
+              textAlign: 'center',
+            }}>
+              {label}
+            </Text>
+          );
+        }
+      })}
     >
-      <Drawer.Screen
-        name="Inicio"
+      <Tab.Screen
+        name="Ejercicios"
         component={HomeNavigator}
         options={{
-          drawerLabel:
-            idiomaActual === 'espana' ? 'Ejercicios' :
-            idiomaActual === 'italia' ? 'Esercizi' :
-            idiomaActual === 'francia' ? 'Exercices' :
-            idiomaActual === 'bandera' ? 'Übungen' :
-            idiomaActual === 'paisesBajos' ? 'Oefeningen' :
-            idiomaActual === 'inglaterra' || idiomaActual === 'estadosUnidos' ? 'Exercises' :
-            idiomaActual === 'portugal' ? 'Exercícios' : 'Ejercicios',
-          drawerIcon: ({ color }) => <AntDesign name="playcircleo" size={20} color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome5 name="play" size={20} color={focused ? 'orange' : 'white'} />
+            </View>
+          ),
         }}
       />
-      <Drawer.Screen
-        name="Idioma"
+      <Tab.Screen
+        name="Lenguaje"
         component={Lenguaje}
         options={{
-          drawerLabel:
-            idiomaActual === 'espana' ? 'Lenguaje' :
-            idiomaActual === 'italia' ? 'Linguaggio' :
-            idiomaActual === 'francia' ? 'Langage' :
-            idiomaActual === 'bandera' ? 'Sprache' :
-            idiomaActual === 'paisesBajos' ? 'Taal' :
-            idiomaActual === 'inglaterra' || idiomaActual === 'estadosUnidos' ? 'Language' :
-            idiomaActual === 'portugal' ? 'Linguagem' : 'Lenguaje',
-          drawerIcon: ({ color }) => <Ionicons name="language" size={20} color={color} />,
+          tabBarIcon: () => (
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Image
+                source={{ uri: 'https://res.cloudinary.com/dcf9eqqgt/image/upload/v1746867672/planeta-tierra_m0mpha.png' }}
+                style={{ width: 30, height: 30 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
         }}
       />
-      <Drawer.Screen
-        name="Cuenta"
+      <Tab.Screen
+        name="Perfil"
         component={Perfil}
         options={{
-          drawerLabel:
-            idiomaActual === 'espana' ? 'Cuenta' :
-            idiomaActual === 'italia' ? 'Account' :
-            idiomaActual === 'francia' ? 'Compte' :
-            idiomaActual === 'bandera' ? 'Konto' :
-            idiomaActual === 'paisesBajos' ? 'Account' :
-            idiomaActual === 'inglaterra' || idiomaActual === 'estadosUnidos' ? 'Account' :
-            idiomaActual === 'portugal' ? 'Conta' : 'Cuenta',
-          drawerIcon: ({ color }) => <MaterialCommunityIcons name="account-circle" size={22} color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Octicons name="person-fill" size={26} color={focused ? 'orange' : 'white'} />
+            </View>
+          ),
         }}
       />
-    </Drawer.Navigator>
+    </Tab.Navigator>
   );
 }
 
 function MainComponent() {
   const { usuarioOn } = useContext(CartContext);
-  return usuarioOn ? <MyDrawer /> : <LoginUsuarioNavigator />;
+  return usuarioOn ? <MyTabs /> : <LoginUsuarioNavigator />;
 }
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     NunitoSans_400Regular,
     NunitoSans_700Bold,
     Roboto_400Regular,
   });
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync(); // 👈 ocultamos el splash cuando las fuentes están listas
+    }
+  }, [fontsLoaded]);
+
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null; // 👈 ya no usamos AppLoading
   }
 
   return (
     <GlobalContext>
-      <NavigationContainer>
+      <NavigationContainer onReady={onLayoutRootView}>
         <MainComponent />
         <FlashMessage position="center" />
       </NavigationContainer>

@@ -1,10 +1,11 @@
 // TarjetaNivel.jsx
 import { ImageBackground, Pressable, Text, View } from "react-native";
-import styles from "../TarjetaNivel/TarjetaNivel.js";
+import styles from "../TarjetaNivelKitEntrenamiento/TarjetaNivelKitEntrenamiento.js";
 import { useContext, useMemo } from "react";
 import { CartContext } from "../../Context/Context.jsx";
 
-const TarjetaNivel = ({ data, nivel, tiempo, navigation }) => {
+
+const TarjetaNivelKitEntrenamiento = ({ data, nivel, tiempo, navigation }) => {
   const { idiomaActual } = useContext(CartContext);
 
   // Diccionario para los nombres por idioma
@@ -51,7 +52,7 @@ const TarjetaNivel = ({ data, nivel, tiempo, navigation }) => {
 
       <Pressable
         onPress={() =>
-          navigation.navigate("DetalleNivel", {
+          navigation.navigate("DetalleNivelKit", {
             rutaNivel,
             data,          // objeto { id, data }
             nivel,         // el payload interno data.data
@@ -71,4 +72,4 @@ const TarjetaNivel = ({ data, nivel, tiempo, navigation }) => {
   );
 };
 
-export default TarjetaNivel;
+export default TarjetaNivelKitEntrenamiento;

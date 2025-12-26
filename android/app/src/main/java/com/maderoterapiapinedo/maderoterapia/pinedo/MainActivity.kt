@@ -1,4 +1,4 @@
-package com.maderoterapiapinedo.maderoterapia.pinedo
+package com.fittlline.fittlline
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

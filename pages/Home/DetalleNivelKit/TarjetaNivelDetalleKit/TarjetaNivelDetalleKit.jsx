@@ -1,16 +1,16 @@
 import { Image, Pressable, Text, View } from "react-native";
-import styles from './TarjetaNivelDetalleStyles.js';
+import styles from './TarjetaNivelDetalleKit.js';
 import { useContext } from "react";
-import { CartContext } from "../../../../Context/Context.jsx";
 import { FontAwesome } from '@expo/vector-icons';
 import { RFValue } from "react-native-responsive-fontsize";
+import { CartContext } from "../../../../Context/Context.jsx";
 
-const TarjetaNivelDetalle = ({ setModalVisible, nivel, tiempo, navigation, ejercicio, handlePresentModalPress, numero, index }) => {
+const TarjetaNivelDetalleKit = ({ setModalVisible, nivel, tiempo, navigation, ejercicio, handlePresentModalPress, numero, index }) => {
     const { closed, setClosed, userRegistro, idiomaActual } = useContext(CartContext);
 
     const navegarDetalleVideo = () => {
         if (closed) {
-            navigation.navigate("DetalleNivelVideo", { ejercicio, numero });
+            navigation.navigate("DetalleNivelVideoKit", { ejercicio, numero });
         } else {
             setModalVisible();
         }
@@ -89,4 +89,4 @@ const bloqueadoTextStyle = {
     fontFamily: 'NunitoSans_400Regular',
     letterSpacing: 1,
 };
-export default TarjetaNivelDetalle;
+export default TarjetaNivelDetalleKit;

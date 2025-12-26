@@ -1,18 +1,21 @@
 import React, {useContext, useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
-import TarjetaIngresoCodigo from '../../pages/Home/TarjetaIngesoCodigo/TarjetaingresoCodigo';
-import TarjetaNivelDetalle from '../../pages/Home/DetalleNivel/TarjetaNivelDetalle/TarjetaNivelDetalle';
 import { CartContext } from '../../Context/Context';
+import TarjetaIngresoCodigo from '../../pages/Home/TarjetaIngesoCodigo/TarjetaingresoCodigo';
+import TarjetaNivelDetalleKit from '../../pages/Home/DetalleNivelKit/TarjetaNivelDetalleKit/TarjetaNivelDetalleKit.jsx';
 
-const ModalCodigoDesbloqueo = ( {nivel, tiempo, navigation, ejercicio, numero, nivelNombre, name, index } ) => {
+const ModalCodigoDesbloqueoKit = ( {nivel, tiempo, navigation, ejercicio, numero, nivelNombre, name, index } ) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [codigoCorrecto, setCodigoCorrecto] = useState(false)
       const {closed, setClosed, userRegistro, idiomaActual} = useContext(CartContext)
   
+
   const CerrarModal = () => {
     setCodigoCorrecto(false)
     setModalVisible(false)
   }
+
+
 
   console.log({index})
   return (
@@ -132,7 +135,7 @@ const ModalCodigoDesbloqueo = ( {nivel, tiempo, navigation, ejercicio, numero, n
       </Modal>
       <Pressable
         onPress={() => setModalVisible(true)}>
-    <TarjetaNivelDetalle setModalVisible={setModalVisible} nivel={nivel} tiempo={tiempo} navigation={navigation} ejercicio={ejercicio} numero={numero} index={index} />
+    <TarjetaNivelDetalleKit setModalVisible={setModalVisible} nivel={nivel} tiempo={tiempo} navigation={navigation} ejercicio={ejercicio} numero={numero} index={index} />
       </Pressable>
     </View>
   );
@@ -194,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalCodigoDesbloqueo;
+export default ModalCodigoDesbloqueoKit;

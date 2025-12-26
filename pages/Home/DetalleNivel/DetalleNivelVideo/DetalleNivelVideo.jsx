@@ -1,121 +1,109 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, ScrollView, SafeAreaView, ImageBackground } from "react-native";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import styles from "./DetalleNivelVideo";
+import { FontAwesome } from "@expo/vector-icons";
+import styles from "./DetalleNivelVideo"; 
 import { RFValue } from "react-native-responsive-fontsize";
 import WebView from "react-native-webview";
 import { CartContext } from "../../../../Context/Context";
 
+const textos = {
+  espana: { Tutorial: "Tutorial", Training: "Entrenamiento" },
+  italia: { Tutorial: "Tutorial", Training: "Allenamento" },
+  francia: { Tutorial: "Tutoriel", Training: "Entraînement" },
+  bandera: { Tutorial: "Tutorial", Training: "Training" }, // Alemania
+  paisesBajos: { Tutorial: "Tutorial", Training: "Training" },
+  inglaterra: { Tutorial: "Tutorial", Training: "Training" },
+  estadosUnidos: { Tutorial: "Tutorial", Training: "Training" },
+  portugal: { Tutorial: "Tutorial", Training: "Treinamento" },
+};
+
 const DetalleNivelVideo = () => {
   const route = useRoute();
-  const { ejercicio, numero } = route.params;
+  const { ejercicio } = route.params; 
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
   const [videoDuration, setVideoDuration] = useState(0);
-  const { idiomaActual } = useContext(CartContext);
+  const [botonActive, setBotonActive] = useState("Tutorial");
+  const { closed, setClosed, userRegistro, idiomaActual } = useContext(CartContext);
 
   useEffect(() => {
-    navigation.setOptions({ title: getNombreEjercicio() });
+    let nombreEjercicio = ejercicio.nombre;
+    if (idiomaActual === "francia") nombreEjercicio = ejercicio.nombreFrancia;
+    else if (idiomaActual === "italia") nombreEjercicio = ejercicio.nombreItalia;
+    else if (idiomaActual === "inglaterra" || idiomaActual === "estadosUnidos") {
+      nombreEjercicio = ejercicio.nombreEstadosUnidos;
+    } else if (idiomaActual === "bandera") nombreEjercicio = ejercicio.nombreAlemania;
+    else if (idiomaActual === "paisesBajos") nombreEjercicio = ejercicio.nombrePaisesBajos;
+    else if (idiomaActual === "portugal") nombreEjercicio = ejercicio.nombrePortugal;
+
+    navigation.setOptions({ title: nombreEjercicio });
     setVideoDuration(ejercicio.duracion);
   }, [navigation, ejercicio, idiomaActual]);
-
-  const getNombreEjercicio = () => {
-    switch (idiomaActual) {
-      case "espana":
-        return ejercicio.nombre;
-      case "italia":
-        return ejercicio.nombreItalia;
-      case "francia":
-        return ejercicio.nombreFrancia;
-      case "estadosUnidos":
-      case "inglaterra":
-        return ejercicio.nombreUsa;
-      case "bandera":
-        return ejercicio.nombreAlemania;
-      case "paisesBajos":
-        return ejercicio.nombrePaisesBajos;
-      case "portugal":
-        return ejercicio.nombrePortugal;
-      default:
-        return ejercicio.nombre;
-    }
-  };
-
-  const getVideoUrl = () => {
-    switch (idiomaActual) {
-      case "espana":
-        return ejercicio.videoUrl;
-      case "italia":
-        return ejercicio.videoUrl;
-      case "francia":
-        return ejercicio.videoUrl;
-      case "estadosUnidos":
-      case "inglaterra":
-        return ejercicio.videoUrl;
-      case "bandera":
-        return ejercicio.videoUrl;
-      case "paisesBajos":
-        return ejercicio.videoUrl;
-      case "portugal":
-        return ejercicio.videoUrl;
-      default:
-        return ejercicio.videoUrl;
-    }
-  };
-
+  const traduccion = textos[idiomaActual]?.[botonActive] || botonActive;
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground
-        source={{
-          uri: "https://res.cloudinary.com/dcf9eqqgt/image/upload/v1755205783/Maderoth%C3%A9rapie_btr1q8.jpg",
-        }}
-        style={{ flex: 1, opacity:1 }}
-        resizeMode="cover"
-      >
-        {/* Overlay oscuro para que el texto sea legible */}
-        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <View style={{ flex: 1, alignItems: "center", justifyContent:"center", paddingBottom: RFValue(50), borderWidth:8, borderTopWidth:0,borderBottomWidth:0, borderColor:"#34cee6"  }}>
-              <Text
-                style={{
-                  color: "#D4AF37",
-                  letterSpacing: 2,
-                  fontSize: 70,
-                }}
-              >
-                {numero}
-              </Text>
-                <Text
-                style={{
-                  color: "white",
-                  letterSpacing: 2,
-                  fontSize: 25,
-                  padding: 20,
-                  textAlign: "center",
-                 
-                }}
-              >
-                {getNombreEjercicio()}
-              </Text>
-
-              {/* Video */}
-              <View style={{ width: "90%", height: 200, }}>
-                <WebView
-                  source={{
-                 uri: `https://vimeo.com/1118577486?fl=ml&fe=ec`
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                  allowsFullscreenVideo
-                  javaScriptEnabled
-                  mediaPlaybackRequiresUserAction={false}
-                />
-              </View>
+    <ScrollView>
+      <View style={{ backgroundColor: "orange", paddingBottom: RFValue(50), height: "auto" }}>
+        <View style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
+          <View style={{ display: "flex", width: "80%", marginBottom: 10, flexDirection: "row-reverse", justifyContent: "space-between" }}>
+            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+             
+             
             </View>
-          </ScrollView>
+          </View>
+
+          {/* Texto traducido del estado activo */}
+          <Text style={{ color: "white", letterSpacing: 2, fontSize: 25, marginBottom: 10 }}>
+            {traduccion}
+          </Text>
+
+          {/* Video */}
+        <View style={{ width: "90%", height: 200 }}>
+  <WebView
+    source={{
+      uri: botonActive !== "Tutorial"
+        ? `https://player.vimeo.com/video/${ejercicio.videoURL}?controls=1`
+        : `https://player.vimeo.com/video/${ejercicio.videoTrailerURL}?controls=1`
+    }}
+    style={{ width: "100%", height: "100%" }}
+    allowsFullscreenVideo={true}
+    javaScriptEnabled={true}
+    mediaPlaybackRequiresUserAction={true} // fuerza interacción del usuario
+  />
+</View>
+
+          <View style={{ width: RFValue(300), borderWidth: 3, borderColor: "white", marginTop: 20 }}>
+            <Image source={{ uri: ejercicio.imagenVideo }} style={{ width: "100%", height: RFValue(120) }} />
+          </View>
+
+          <View style={{ marginTop: 40, display: "flex", flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <View style={{ display: "flex", gap: 12, width: "90%", marginBottom: 30, justifyContent: "center", flexDirection: "row" }}>
+              <TouchableOpacity
+                style={botonActive === "Tutorial" ? styles.botonOn : styles.botonDesactivado}
+                onPress={() => setBotonActive("Tutorial")}
+              >
+                <Text style={{ color: "white", textAlign: "center", letterSpacing: 1, fontFamily: 'NunitoSans_400Regular' }}>
+                  {textos[idiomaActual]?.Tutorial || "Tutorial"}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={botonActive === "Training" ? styles.botonOn : styles.botonDesactivado}
+                onPress={() => setBotonActive("Training")}
+              >
+                <Text style={{ color: "white", textAlign: "center", letterSpacing: 1, fontFamily: 'NunitoSans_400Regular' }}>
+                  {textos[idiomaActual]?.Training || "Training"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </ImageBackground>
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 };
+
+
 
 export default DetalleNivelVideo;

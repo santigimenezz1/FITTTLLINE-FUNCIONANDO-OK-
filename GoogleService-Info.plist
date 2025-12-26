@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyB1rt4osd9FmX2DpS9Edl6Trdl5j0lFRYs</string>
+	<string>AIzaSyAzYzcP2MzArG1YAkBOJ_jJ-8n5mY4tu7U</string>
 	<key>GCM_SENDER_ID</key>
-	<string>757788765388</string>
+	<string>793407211700</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.maderoterapiapinedo.maderoterapia.pinedo</string>
+	<string>com.fittlline.fittlline</string>
 	<key>PROJECT_ID</key>
-	<string>maderoterapia-4fd62</string>
+	<string>fittlline-alfombra-conos</string>
 	<key>STORAGE_BUCKET</key>
-	<string>maderoterapia-4fd62.firebasestorage.app</string>
+	<string>fittlline-alfombra-conos.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:757788765388:ios:9740013a86bb1884a36669</string>
+	<string>1:793407211700:ios:e58e4dbdf565a9eda36fe1</string>
 </dict>
 </plist>

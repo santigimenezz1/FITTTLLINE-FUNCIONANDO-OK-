@@ -3,6 +3,8 @@ import { ImageBackground, Pressable, Text, View } from "react-native";
 import { useContext } from "react";
 import { CartContext } from "../../Context/Context.jsx";
 import styles from "./TarjetaNivelFittPro.js";
+import DetalleNivelNivelesKit from "../../pages/Home/DetalleNivelKit/DetalleNivelNivelesKit/DetalleNivelNivelesKit.jsx";
+
 
 const TarjetaNivelFittPro = ({ data, nivel, tiempo, navigation, nivelNombre, rutaNivel }) => {
   const { closed, idiomaActual } = useContext(CartContext);
@@ -36,7 +38,7 @@ const TarjetaNivelFittPro = ({ data, nivel, tiempo, navigation, nivelNombre, rut
 
       <Pressable
         onPress={() =>
-          navigation.navigate("DetalleNivelNiveles", {
+          navigation.navigate("DetalleNivelNivelesKit", {
             rutaNivel,
             data,
             nivelNombre,

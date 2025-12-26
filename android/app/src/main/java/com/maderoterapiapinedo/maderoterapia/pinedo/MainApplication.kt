@@ -1,4 +1,4 @@
-package com.maderoterapiapinedo.maderoterapia.pinedo
+package com.fittlline.fittlline
 
 import android.app.Application
 import android.content.res.Configuration

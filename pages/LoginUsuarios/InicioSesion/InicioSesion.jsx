@@ -91,9 +91,17 @@ const InicioSesion = () => {
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldTouched }) => (
         <View style={styles.container__inicioSesion}>
+          <Image
+            width={230}
+            height={75}
+            source={{
+              uri: 'https://res.cloudinary.com/dcf9eqqgt/image/upload/v1764599157/fittlline_ir0yke.png',
+            }}
+          />
+
           {isLoading && (
             <View style={{ marginVertical: 20 }}>
-              <Swing size={48} color="orange" />
+              <Swing size={48} color="white" />
             </View>
           )}
 
