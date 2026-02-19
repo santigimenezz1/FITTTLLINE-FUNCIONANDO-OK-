@@ -2,7 +2,7 @@
   "expo": {
     "name": "FITTLLINE",
     "slug": "fittlline-nuevo",
-    "version": "1.0.52",
+    "version": "1.0.59",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
       "bundleIdentifier": "com.fittlline",
       "googleServicesFile": "./GoogleService-Info.plist",
       "jsEngine": "hermes",
-      "buildNumber": "1.0.52",
+      "buildNumber": "1.0.59",
       "icon": "./assets/icon.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false

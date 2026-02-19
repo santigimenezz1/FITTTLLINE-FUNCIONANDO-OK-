@@ -18,7 +18,6 @@ import { Roboto_400Regular } from '@expo-google-fonts/roboto';
 import Lenguaje from './pages/Lenguaje/Lenguaje.jsx';
 import * as SplashScreen from 'expo-splash-screen';
 
-// 👇 Mantener el splash visible hasta que carguen las fuentes
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
@@ -122,7 +121,12 @@ function MyTabs() {
 }
 
 function MainComponent() {
-  const { usuarioOn } = useContext(CartContext);
+  // ✅ AGREGADO: isLoading para esperar a que Firebase se inicialice
+  const { usuarioOn, isLoading } = useContext(CartContext);
+  
+  // ✅ Mientras isLoading sea true, NO renderiza nada (muestra splash)
+  if (isLoading) return null;
+  
   return usuarioOn ? <MyTabs /> : <LoginUsuarioNavigator />;
 }
 
@@ -135,12 +139,12 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await SplashScreen.hideAsync(); // 👈 ocultamos el splash cuando las fuentes están listas
+      await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null; // 👈 ya no usamos AppLoading
+    return null;
   }
 
   return (
