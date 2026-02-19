@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Image, TouchableOpacity, ScrollView, Dimensions, ImageBackground, ActivityIndicator } from "react-native";
+import { View, Image, TouchableOpacity, ScrollView, Dimensions, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import styles from "./DetalleNivelVideo"; 
 import { RFValue } from "react-native-responsive-fontsize";
-import { Vimeo } from "react-native-vimeo-iframe"; 
+import WebView from "react-native-webview";
 import { CartContext } from "../../../../Context/Context";
 
 const textos = {
@@ -24,7 +24,6 @@ const DetalleNivelVideo = () => {
   const { ejercicio } = route.params; 
   const navigation = useNavigation();
   const [botonActive, setBotonActive] = useState("Tutorial");
-  const [isVideoLoading, setIsVideoLoading] = useState(true);
   const { idiomaActual } = useContext(CartContext);
 
   useEffect(() => {
@@ -40,22 +39,7 @@ const DetalleNivelVideo = () => {
     navigation.setOptions({ title: nombreEjercicio });
   }, [navigation, ejercicio, idiomaActual]);
 
-  useEffect(() => {
-    // Resetear loading cuando cambia el video
-    setIsVideoLoading(true);
-    
-    // Timer para desaparecer el spinner después de 400ms
-    const timer = setTimeout(() => {
-      setIsVideoLoading(false);
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [botonActive]);
-
   const traduccion = textos[idiomaActual]?.[botonActive] || botonActive;
-
-  // Lógica para alternar el ID del video según el botón activo
-  const activeVideoId = botonActive !== "Tutorial" ? ejercicio.videoURL : ejercicio.videoTrailerURL;
 
   return (
     <ScrollView 
@@ -87,61 +71,34 @@ const DetalleNivelVideo = () => {
             {traduccion}
           </Text>
 
-          {/* --- REPRODUCTOR VIMEO (COPIADO EXACTO) --- */}
+          {/* --- REPRODUCTOR WEBVIEW CON HACK DE ESCALA --- */}
           <View style={{ 
-            width: "105%", 
+            width: "112%", 
             aspectRatio: 16 / 9, 
             overflow: 'hidden', 
-            backgroundColor: "transparent",
-            borderRadius: 8,
-            position: 'relative'
+            backgroundColor: "transparent"
           }}>
-            
-            {/* SPINNER MIENTRAS CARGA */}
-            {isVideoLoading && (
-              <View style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                zIndex: 5
-              }}>
-                <ActivityIndicator size="large" color="#34cee6" />
-              </View>
-            )}
-
-            <Vimeo
-              videoId={activeVideoId}
-              params={'api=1&autoplay=0&controls=1'}
-              allowsFullscreenVideo={true}
+            <WebView
+              source={{
+                uri: botonActive !== "Tutorial"
+                  ? `https://player.vimeo.com/video/${ejercicio.videoURL}?controls=1`
+                  : `https://player.vimeo.com/video/${ejercicio.videoTrailerURL}?controls=1`
+              }}
               style={{ 
-                width: '125%', 
-                height: '125%',
-                marginLeft: '-12.5%', 
-                marginTop: '-7%',
-                transform: [{ scale: 0.8 }],
-                backgroundColor: 'transparent',
-                opacity: isVideoLoading ? 0 : 1,
-                zIndex: isVideoLoading ? 1 : 10
+                width: "125%", 
+                height: "125%",
+                marginLeft: "-12.5%",
+                marginTop: "-7%",
+                transform: [{ scale: 0.8 }]
               }}
-              webViewProps={{
-                scrollEnabled: false,
-                style: { backgroundColor: 'transparent' },
-                containerStyle: { backgroundColor: 'transparent' },
-                underlayColor: 'black',
-                userAgent: "Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
-              }}
+              allowsFullscreenVideo={true}
+              javaScriptEnabled={true}
+              mediaPlaybackRequiresUserAction={true}
+              userAgent="Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
             />
           </View>
           {/* ------------------------------------------- */}
 
-          <View style={{ width: RFValue(300), borderWidth: 3, borderColor: "white", marginTop: 20 }}>
-            <Image source={{ uri: ejercicio.imagenVideo }} style={{ width: "100%", height: RFValue(120) }} />
-          </View>
 
           <View style={{ marginTop: 40, flexDirection: "row", gap: 12, width: "90%", justifyContent: "center" }}>
             <TouchableOpacity
